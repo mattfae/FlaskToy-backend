@@ -11,6 +11,7 @@ mongoClient = MongoClient('mongodb://127.0.0.1:27017')
 db = mongoClient.get_database('names_db')
 names_col = db.get_collection('names_col')
 
+
 @app.route('/addname/<name>/')
 def addname(name):
     names_col.insert_one({"name": name.lower()})
