@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for
+from flask import Flask, jsonify
 from pymongo import MongoClient
 from flask_cors import CORS, cross_origin
 import json
@@ -11,19 +11,22 @@ mongoClient = MongoClient('mongodb://127.0.0.1:27017')
 db = mongoClient.get_database('names_db')
 names_col = db.get_collection('names_col')
 
+movies = [
+    {
+        "name": "The Shawshank Redemption",
+        "casts": ["Tim Robbins", "Morgan Freeman", "Bob Gunton", "William Sadler"],
+        "genres": ["Drama"]
+    },
+    {
+       "name": "The Godfather ",
+       "casts": ["Marlon Brando", "Al Pacino", "James Caan", "Diane Keaton"],
+       "genres": ["Crime", "Drama"]
+    }
+]
 
-@app.route('/addname/<name>/')
-def addname(name):
-    names_col.insert_one({"name": name.lower()})
-    return redirect(url_for('getnames'))
-
-@app.route('/getnames/')
-def getnames():
-    names_json = []
-    if names_col.find({}):
-        for name in names_col.find({}).sort("name"):
-            names_json.append({"name": name['name'], "id": str(name['_id'])})
-    return json.dumps(names_json)
+@app.route('/movies')
+def returnMovies():
+    return jsonify(movies)
 
 
 if __name__ == "__main__":
