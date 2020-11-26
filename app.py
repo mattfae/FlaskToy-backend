@@ -1,15 +1,7 @@
-from flask import Flask, jsonify
-from pymongo import MongoClient
-from flask_cors import CORS, cross_origin
+from flask import Flask, request, Response
 import json
 
 app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
-
-mongoClient = MongoClient('mongodb://127.0.0.1:27017')
-db = mongoClient.get_database('names_db')
-names_col = db.get_collection('names_col')
 
 movies = [
     {
